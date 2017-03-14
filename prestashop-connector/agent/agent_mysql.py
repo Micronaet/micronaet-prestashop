@@ -32,6 +32,7 @@ class mysql_connector():
     def search(default_code):
         ''' Search product
         '''
+        import pdb; pdb.set_trace()
         if not self.connection:
             return False
         
@@ -40,8 +41,8 @@ class mysql_connector():
             FROM ps_product
             WHERE reference = '%s';
             ''' % default_code)
-            
-        return [item[0] form item in self.connection]
+
+        return [item[0] for item in self.connection]
 
     # -------------------------------------------------------------------------
     # Constructor:
