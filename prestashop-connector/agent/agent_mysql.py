@@ -19,7 +19,6 @@
 ###############################################################################
 import os
 import sys
-from datetime import datetime, timedelta
 
 # -----------------------------------------------------------------------------
 #                                MYSQL CLASS
@@ -40,6 +39,7 @@ class mysql_connector():
         self.port = port or 3306
         self.charset = charset
         self.status = 'connected'
+        self.connected = True
         
         try:            
             error = 'Error no MySQLdb installed'
@@ -59,10 +59,11 @@ class mysql_connector():
                 db=self.database,
                 cursorclass=MySQLdb.cursors.DictCursor,
                 charset=self.charset,
-                )        
+                )                        
         except:
             self.status = error
-        return self
+            self.connected = False
+        return
     
 # -----------------------------------------------------------------------------
 #                                 MAIN PROCEDURE    
@@ -72,13 +73,17 @@ def main():
     '''
     # TODO read condig PHP file
     database = 'database'
-    user = 'usar'
+    user = 'user'
     password = 'password'
     server = 'localhost'
     port = 3306
     
     mysql_ps = mysql_connector(database, user, password, server, port)
-    return
+    if not mysql_ps.connected:
+        print 'Not connected: %s' % mysql_ps.status
+        sys.exit()
+    else:    
+        return 'Connected'
 
 if __name__ == '__main__':
     main()
