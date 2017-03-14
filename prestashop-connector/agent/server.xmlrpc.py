@@ -67,7 +67,7 @@ for line in open(ps_settings, 'r'):
 
 port = 3306 # use default
 
-if not all(user, password, server, database, port):    
+if not all((user, password, server, database, port)):    
     print 'Cannot connect, some parameter missing!'
     sys.exit()
     
