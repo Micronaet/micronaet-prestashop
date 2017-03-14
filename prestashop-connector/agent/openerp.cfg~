@@ -8,4 +8,4 @@ port: 8000
 #password
 
 [Prestashop]
-settings: /var/www/html/2015.redesiderio.it/site/public/http/config/settings.inc.php
+config: /var/www/html/2015.redesiderio.it/site/public/http/config/settings.inc.php
