@@ -98,7 +98,6 @@ server.register_introspection_functions()
 def execute(model, operation, parameter=False):
     ''' Collect a list of function for common operations            
     '''
-    import pdb; pdb.set_trace()
     # Setup dict:
     res = {
         'result': False,

@@ -35,8 +35,8 @@ class mysql_connector():
         import pdb; pdb.set_trace()
         if not self.connection:
             return False
-        
-        self.connection.execute('''
+        cr = self.connection.cursor()
+        cr.execute('''
             SELECT id_product
             FROM ps_product
             WHERE reference = '%s';
