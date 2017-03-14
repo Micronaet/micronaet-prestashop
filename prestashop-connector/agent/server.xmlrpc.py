@@ -67,7 +67,7 @@ for line in open(ps_settings, 'r'):
 
 port = 3306 # use default
 
-if not all((user, password, server, database, port)):    
+if not all((user, password, database, server, port)):    
     print 'Cannot connect, some parameter missing!'
     sys.exit()
     
@@ -76,7 +76,7 @@ if not all((user, password, server, database, port)):
 mysql_db = agent_mysql.mysql_connector(
     database, user, password, server, port
     )
-
+print 'Connected %s:%s %s-%s' % (server, port, database, user)
 # -----------------------------------------------------------------------------
 #                         Restrict to a particular path
 # -----------------------------------------------------------------------------
