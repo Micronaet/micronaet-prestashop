@@ -62,7 +62,7 @@ for line in open(ps_settings, 'r'):
         if param[0] == '_DB_NAME_':
             database = param[1]
 
-port = 3306
+port = 3306 # use default
 
 if not all(user, password, server, database, port):    
     print 'Cannot connect, some parameter missing!'

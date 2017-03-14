@@ -40,7 +40,7 @@ class mysql_connector():
         self.port = port or 3306
         self.charset = charset
         
-        error = False
+        res = 'Connected'
         try:            
             import MySQLdb, MySQLdb.cursors
                         
@@ -53,8 +53,8 @@ class mysql_connector():
                 charset=self.charset,
                 )        
         except:
-            error = 'Error no module MySQLdb installed!'
-        return error
+            res = 'Error no module MySQLdb installed!'
+        return res
     
 # -----------------------------------------------------------------------------
 #                                 MAIN PROCEDURE    
