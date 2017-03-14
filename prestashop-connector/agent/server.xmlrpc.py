@@ -22,6 +22,7 @@ import os
 import sys
 import ConfigParser
 from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
+from . import agent_mysql
 
 # -----------------------------------------------------------------------------
 #                                Parameters
@@ -30,11 +31,48 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
 config = ConfigParser.ConfigParser()
 config.read(['./openerp.cfg'])
 
+# --------------
 # XMLRPC server:
+# --------------
 xmlrpc_host = config.get('XMLRPC', 'host') 
 xmlrpc_port = eval(config.get('XMLRPC', 'port'))
 
 ps_settings = config.get('Prestashop', 'settings') # Configuration file
+
+# -----------------
+# Mysql parameters:
+# -----------------
+# Read PHP config file:
+for line in open(ps_settings, 'r'):
+    line = line.strip()
+    line = line[:-1] # no ;
+    line = line.replace('define', '')
+    param = eval(line)
+    if type(param) == tuple:
+            
+        if param[0] == '_DB_USER_':
+            user = param[1]
+        if param[0] == '_DB_PASSWD_':
+            password = param[1]
+        if param[0] == '_DB_PREFIX_':
+            prefix = param[1]
+
+        if param[0] == '_DB_SERVER_':
+            server = param[1]
+        if param[0] == '_DB_NAME_':
+            database = param[1]
+
+port = 3306
+
+if not all(user, password, server, database, port):    
+    print 'Cannot connect, some parameter missing!'
+    sys.exit()
+    
+
+# Connect obj
+mysql_db = agent_mysql.mysql_connector(
+    database, user, password, server, port
+    )
 
 # -----------------------------------------------------------------------------
 #                         Restrict to a particular path
