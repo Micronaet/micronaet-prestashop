@@ -29,20 +29,24 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
-    def search(self, default_code):
+    def search(self, parameter):
         ''' Search product
+            parameter = [('field', 'operator', 'value')]
         '''
+        parameter = parameter[0]
         if not self.connection:
             return False
         cr = self.connection.cursor()
         cr.execute('''
             SELECT id_product
             FROM ps_product
-            WHERE reference = '%s';
-            ''' % default_code)
+            WHERE %s %s '%s';''' % (
+                parameter[0],
+                parameter[1],
+                parameter[2],                
+                ))
 
-        import pdb; pdb.set_trace()
-        return [item[0] for item in cr.fetchall()]
+        return [item['id_product'] for item in cr.fetchall()]
 
     # -------------------------------------------------------------------------
     # Constructor:
