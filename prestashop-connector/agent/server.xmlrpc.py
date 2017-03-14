@@ -95,7 +95,7 @@ server.register_introspection_functions()
 # -----------------------------------------------------------------------------
 #                            Manifest function exported:
 # -----------------------------------------------------------------------------
-def execute(model, operation, parameter=None):
+def execute(model, operation, parameter=False):
     ''' Collect a list of function for common operations            
     '''
     import pdb; pdb.set_trace()
@@ -106,7 +106,7 @@ def execute(model, operation, parameter=None):
         'note': False
         }
     
-    if parameter in None:
+    if not parameter:
         parameter = {}
 
     print '[INFO] Execute: Model %s - Operation %s - Parameter list: %s' % (
@@ -120,7 +120,7 @@ def execute(model, operation, parameter=None):
         # 1. Search product:
         # ------------------
         if operation == 'search':
-            pass            
+            return mysql_db.search(parameter)
         
         # ------------------
         # 2. Create product:
