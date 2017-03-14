@@ -47,7 +47,10 @@ for line in open(ps_settings, 'r'):
     line = line.strip()
     line = line[:-1] # no ;
     line = line.replace('define', '')
-    param = eval(line)
+    try:
+        param = eval(line)
+    except:
+        continue # not evaulable line    
     if type(param) == tuple:
             
         if param[0] == '_DB_USER_':
