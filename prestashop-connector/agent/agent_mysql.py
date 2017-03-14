@@ -26,7 +26,26 @@ import sys
 class mysql_connector():
     ''' MySQL connector
     '''
-    
+    # -------------------------------------------------------------------------
+    #                             Exported function:
+    # -------------------------------------------------------------------------
+    def search(default_code):
+        ''' Search product
+        '''
+        if not self.connection:
+            return False
+        
+        self.connection.execute('''
+            SELECT id_product
+            FROM ps_product
+            WHERE reference = '%s';
+            ''' % default_code)
+            
+        return [item[0] form item in self.connection]
+
+    # -------------------------------------------------------------------------
+    # Constructor:
+    # -------------------------------------------------------------------------
     def __init__(self, database, user, password, server='localhost', port=3306, 
             charset='utf8'):
         ''' Init procedure        
