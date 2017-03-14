@@ -39,11 +39,19 @@ class mysql_connector():
         self.server = server or 'localhost'
         self.port = port or 3306
         self.charset = charset
+        self.status = 'connected'
         
-        res = 'Connected'
         try:            
+            error = 'Error no MySQLdb installed'
             import MySQLdb, MySQLdb.cursors
-                        
+
+            error = 'Error connecting to database: %s:%s > %s [%s]' % (
+                self.server,
+                self.port,
+                self.database,
+                self.user,
+                )
+                
             self.connection = MySQLdb.connect(
                 host=self.server,
                 user=self.user,
@@ -53,8 +61,8 @@ class mysql_connector():
                 charset=self.charset,
                 )        
         except:
-            res = 'Error no module MySQLdb installed!'
-        return res
+            self.status = error
+        return self
     
 # -----------------------------------------------------------------------------
 #                                 MAIN PROCEDURE    
