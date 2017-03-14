@@ -78,8 +78,7 @@ def execute(model, operation, parameter=None):
         # 1. Search product:
         # ------------------
         if operation == 'search':
-            pass
-            
+            pass            
         
         # ------------------
         # 2. Create product:
@@ -101,13 +100,13 @@ def execute(model, operation, parameter=None):
             
         else:
             res['error'] = 'Model %s operation %s not managed!' % (
-                model, operation)
-            
+                model, operation)            
     
     # -------------------------------------------------------------------------
     #                           CATEGORY OPERATIONS:
     # -------------------------------------------------------------------------    
     elif model == 'category':
+        pass
     
     else:
         res['error'] = 'Model %s not managed!' % model
