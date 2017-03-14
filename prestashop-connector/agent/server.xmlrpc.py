@@ -22,7 +22,7 @@ import os
 import sys
 import ConfigParser
 from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
-from . import agent_mysql
+import agent_mysql
 
 # -----------------------------------------------------------------------------
 #                                Parameters
