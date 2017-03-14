@@ -106,11 +106,8 @@ def execute(model, operation, parameter=False):
         'note': False
         }
     
-    if not parameter:
-        parameter = {}
-
     print '[INFO] Execute: Model %s - Operation %s - Parameter list: %s' % (
-        model, operation, parameter.keys())
+        model, operation, parameter)
 
     # -------------------------------------------------------------------------
     #                           PRODUCT OPERATIONS:
