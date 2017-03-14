@@ -37,15 +37,17 @@ class mysql_connector():
         if not self.connection:
             return False
         cr = self.connection.cursor()
-        cr.execute('''
+        query = '''
             SELECT id_product
             FROM ps_product
-            WHERE %s %s '%s';''' % (
+            WHERE %s %s '%s';
+            ''' % (
                 parameter[0],
                 parameter[1],
                 parameter[2],                
-                ))
-
+                )
+        print query
+        cr.execute(query)
         return [item['id_product'] for item in cr.fetchall()]
 
     # -------------------------------------------------------------------------
