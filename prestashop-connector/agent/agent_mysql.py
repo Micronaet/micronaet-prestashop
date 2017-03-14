@@ -29,7 +29,7 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
-    def search(default_code):
+    def search(self, default_code):
         ''' Search product
         '''
         import pdb; pdb.set_trace()
