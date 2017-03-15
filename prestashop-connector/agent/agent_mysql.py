@@ -111,7 +111,7 @@ class mysql_connector():
         record.update(record_default) # Add field passed from ODOO
 
         fields = values = ''
-        for field, value in record.iteritems()
+        for field, value in record.iteritems():
             if fields:
                 fields += ', '
             fields += '%s' % field
