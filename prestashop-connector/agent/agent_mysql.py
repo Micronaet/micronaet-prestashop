@@ -50,6 +50,8 @@ class mysql_connector():
             'condition',
             'reference',
             'supplier_reference',
+            'unity',
+            'location',
 
             # Date:
             'available_date', 'date_add', 'date_upd',
@@ -114,7 +116,7 @@ class mysql_connector():
         for field, value in record.iteritems():
             if fields:
                 fields += ', '
-            fields += '%s' % field
+            fields += '`%s`' % field
 
             if values:
                 values += ', '
