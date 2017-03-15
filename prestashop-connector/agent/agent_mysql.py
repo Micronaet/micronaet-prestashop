@@ -120,9 +120,9 @@ class mysql_connector():
             if values:
                 values += ', '
             values += '%s%s%s' % (
-                '\'' if field in field_quote,
+                '\'' if field in field_quote else '',
                 field,
-                '\'' if field in field_quote,
+                '\'' if field in field_quote else '',
                 )
             
         cr = self.connection.cursor()
