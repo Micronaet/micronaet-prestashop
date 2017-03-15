@@ -111,7 +111,7 @@ def execute(model, operation, **parameter):
     # -------------------------------------------------------------------------
     #                           PRODUCT OPERATIONS:
     # -------------------------------------------------------------------------  
-    import pdb; pdb.set_trace()  
+    import pdb; pdb.set_trace()
     if model == 'product':
         # ------------------
         # 1. Search product:
