@@ -120,7 +120,7 @@ class mysql_connector():
                 values += ', '
             values += '%s%s%s' % (
                 '\'' if field in field_quote else '',
-                field,
+                value,
                 '\'' if field in field_quote else '',
                 )
             
