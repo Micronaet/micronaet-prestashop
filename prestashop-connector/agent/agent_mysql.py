@@ -29,10 +29,9 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
-    def create(self, **parameter):
+    def create(self, record):
         ''' Update record
         '''
-        record = parameter['record']
         if not self.connection:
             return False
 
@@ -146,11 +145,10 @@ class mysql_connector():
         
         return True        
         
-    def search(self, parameter):
+    def search(self, domain):
         ''' Search product
             parameter = [('field', 'operator', 'value')]
         '''
-        parameter = parameter[0]
         if not self.connection:
             return False
         cr = self.connection.cursor()
@@ -159,9 +157,9 @@ class mysql_connector():
             FROM ps_product
             WHERE %s %s '%s';
             ''' % (
-                parameter[0],
-                parameter[1],
-                parameter[2],                
+                domain[0],
+                domain[1],
+                domain[2],                
                 )
         print query
         cr.execute(query)

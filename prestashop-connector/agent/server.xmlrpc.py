@@ -117,13 +117,17 @@ def execute(model, operation, *parameter, **args):
         # 1. Search product:
         # ------------------
         if operation == 'search':
-            return mysql_db.search(parameter)
+            return mysql_db.search(
+                 parameter[0][1], # domain filter only one condition
+                 )
         
         # ------------------
         # 2. Create product:
         # ------------------
         elif operation == 'create':
-            return mysql_db.create(parameter)
+            return mysql_db.create(
+                parameter[0], # Dictionary with record
+                )
         
         # ------------------
         # 3. Update product:
