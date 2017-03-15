@@ -95,10 +95,10 @@ server.register_introspection_functions()
 # -----------------------------------------------------------------------------
 #                            Manifest function exported:
 # -----------------------------------------------------------------------------
-def execute(model, operation, parameter=False):
+def execute(model, operation, **parameter):
     ''' Collect a list of function for common operations            
     '''
-    # Setup dict:
+    # Setup result dict:
     res = {
         'result': False,
         'error': False,
@@ -110,7 +110,8 @@ def execute(model, operation, parameter=False):
 
     # -------------------------------------------------------------------------
     #                           PRODUCT OPERATIONS:
-    # -------------------------------------------------------------------------    
+    # -------------------------------------------------------------------------  
+    import pdb; pdb.set_trace()  
     if model == 'product':
         # ------------------
         # 1. Search product:
@@ -122,13 +123,13 @@ def execute(model, operation, parameter=False):
         # 2. Create product:
         # ------------------
         elif operation == 'create':
-            pass
+            return mysql_db.create(parameter)
         
         # ------------------
         # 3. Update product:
         # ------------------
         elif operation == 'write':
-            pass
+            return mysql_db.write(parameter)
         
         # ------------------
         # 4. Delete product:

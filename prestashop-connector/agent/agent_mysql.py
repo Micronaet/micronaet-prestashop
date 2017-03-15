@@ -29,6 +29,123 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
+    def create(self, **parameter):
+        ''' Update record
+        '''
+        record = parameter['record']
+        if not self.connection:
+            return False
+
+        # ---------------------------------------------------------------------
+        # Fields validation:
+        # ---------------------------------------------------------------------
+        field_mandatory = ['reference', 'price']
+
+        # Use quote:
+        field_quote = [            
+            # String:
+            'ean13',
+            'upc',
+            'redirect_type',
+            'visibility',
+            'condition',
+            'reference',
+            'supplier_reference',
+
+            # Date:
+            'available_date', 'date_add', 'date_upd',
+            ]
+
+        # ---------------------------------------------------------------------
+        # Update numeric ps_product
+        # ---------------------------------------------------------------------
+        record_default = {
+            #'id_product':
+            'id_supplier': 0,
+            'id_manufacturer': 0,
+            'id_category_default': 0, # TODO
+            'id_shop_default': 1,
+            'id_tax_rules_group': 1,
+            'on_sale': 0,
+            'online_only': 0,
+            'ean13': '', # TODO
+            'upc': '',
+            'ecotax': 0.0,
+            'quantity': 0,
+            'minimal_quantity': 1,
+            'price': 0.0, # TODO
+            'wholesale_price': 0.0,
+            'unity': '',
+            'unit_price_ratio': 0.0,
+            'additional_shipping_cost': 0.0,
+            'reference': '', # TODO
+            'supplier_reference': '', # TODO
+            'location': '',
+            'width': 0.0, # TODO
+            'height': 0.0, # TODO
+            'depth': 0.0, # TODO
+            'weight': 0.0, # TODO
+            'out_of_stock': 2, # TODO
+            'quantity_discount': 0,
+            'customizable': 0,
+            'uploadable_files': 0,
+            'text_fields': 0,
+            'active': 1, # TODO
+            'redirect_type': '404',
+            'id_product_redirected': 0,
+            'available_for_order': 1, # TODO
+            'available_date': '2014-02-21', # TODO
+            'condition': 'new',
+            'show_price': 1,
+            'indexed': 1,
+            'visibility': 'both',
+            'cache_is_pack': 0,
+            'cache_has_attachments': 0,
+            'is_virtual': 0,
+            'cache_default_attribute': 0, # TODO
+            'date_add': '2017-01-01 10:00:00',
+            'date_upd': '2017-01-01 10:00:00',
+            'advanced_stock_management': 0,
+            'pack_stock_type': 3,
+            }
+        
+        record_default.update(record) # Add field passed from ODOO
+
+        fields = values = ''
+        for field, value in record_default:
+            if fields:
+                fields += ', '
+            fields += '%s' % field
+
+            if values:
+                values += ', '
+            values += '%s%s%s' % (
+                '\'' if field in field_quote,
+                field,
+                '\'' if field in field_quote,
+                )
+            
+        cr = self.connection.cursor()
+        query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
+
+        item_id = cr.execute(query)
+        
+        # Update lang ps_product_lang
+        
+        return True
+
+    def write(self, **parameter):
+        ''' Update record
+        '''
+        item_id = parameter['item_id']
+        record = parameter['record']
+        
+        # Update numeric ps_product 
+        
+        # Update lang ps_product_lang
+        
+        return True        
+        
     def search(self, parameter):
         ''' Search product
             parameter = [('field', 'operator', 'value')]
