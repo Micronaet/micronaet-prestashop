@@ -95,7 +95,7 @@ server.register_introspection_functions()
 # -----------------------------------------------------------------------------
 #                            Manifest function exported:
 # -----------------------------------------------------------------------------
-def execute(model, operation, **parameter):
+def execute(model, operation, *parameter, **args):
     ''' Collect a list of function for common operations            
     '''
     # Setup result dict:
