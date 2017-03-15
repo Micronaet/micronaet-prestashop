@@ -124,9 +124,9 @@ class mysql_connector():
                 '\'' if field in field_quote else '',
                 )
             
+        import pdb; pdb.set_trace()
         cr = self.connection.cursor()
         query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
-
         item_id = cr.execute(query)
         
         # Update lang ps_product_lang
