@@ -108,10 +108,10 @@ class mysql_connector():
             'pack_stock_type': 3,
             }
         
-        record_default.update(record) # Add field passed from ODOO
+        record.update(record_default) # Add field passed from ODOO
 
         fields = values = ''
-        for field, value in record_default:
+        for field, value in record.iteritems()
             if fields:
                 fields += ', '
             fields += '%s' % field
