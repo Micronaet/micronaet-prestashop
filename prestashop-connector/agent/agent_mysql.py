@@ -252,7 +252,7 @@ class mysql_connector():
             cr = self._connection.cursor()
             query = 'INSERT INTO ps_product_lang(%s) VALUES (%s);' % (
                 fields, values)
-            import pdb; pdb.set_trace()    
+
             cr.execute(query)
             self._connection.commit()
                     
