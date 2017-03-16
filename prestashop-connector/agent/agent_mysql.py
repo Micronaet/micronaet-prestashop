@@ -224,8 +224,8 @@ def main():
     port = 3306
     
     mysql_ps = mysql_connector(database, user, password, server, port)
-    if not mysql_ps.connected:
-        print 'Not connected: %s' % mysql_ps.status
+    if not mysql_ps._connected:
+        print 'Not connected: %s' % mysql_ps._status
         sys.exit()
     else:    
         return 'Connected'

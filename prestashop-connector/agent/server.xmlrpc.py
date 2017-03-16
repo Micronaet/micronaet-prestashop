@@ -78,8 +78,8 @@ try:
     print 'Connected %s:%s %s-%s' % (server, port, database, user)    
     
 except:
-    print 'Cannot read MYSQL data access Demo mode!'
-    mysql_db = False # no file 
+    print 'Cannot read MYSQL data access!'
+    sys.exit()
 
 # -----------------------------------------------------------------------------
 #                         Restrict to a particular path
