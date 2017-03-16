@@ -54,7 +54,6 @@ class mysql_connector():
         meta_description = lang_data.get('meta_description', '')
         data['link_rewrite'] = meta_desciption.replace(' ', '-')
         data['meta_keywords'] = meta_description
-            'name': '',            
         return
     # -------------------------------------------------------------------------
     #                             Exported function:
