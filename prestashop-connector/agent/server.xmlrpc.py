@@ -167,6 +167,8 @@ def execute(model, operation, *parameter, **args):
     elif model == 'system':
         if operation == 'log':
             mysql_db._log = parameter[0]
+            res['result'] = 'Server log activated' if mysql_db._log \
+                else 'Server log not activated'
     
     # -------------------------------------------------------------------------
     #                                 ERROR:
