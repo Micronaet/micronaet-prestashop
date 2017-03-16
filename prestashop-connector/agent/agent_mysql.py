@@ -27,16 +27,46 @@ class mysql_connector():
     ''' MySQL connector
     '''
     # -------------------------------------------------------------------------
+    # Parameters for defaults:
+    # -------------------------------------------------------------------------
+    # TODO manage in other mode!
+    id_shop = 1
+    id_langs = {
+        'it_IT': 1,
+        'en_US': 2,
+        }
+    
+    # -------------------------------------------------------------------------
+    #                              Utility function:
+    # -------------------------------------------------------------------------
+    def _expand_lang_data(self, lang_data):
+        ''' Generate extra data for SEO management
+            mandatory: name, meta_title, meta_description            
+        '''
+        if not lang_data:
+            return {}
+        
+        name = lang_data.get('name', '')        
+        meta_title = lang_data.get('meta_title', '')
+        data['description'] = '<p>%s</p>' % (meta_title or meta_name)
+        data['description_short'] = '<p>%s</p>' % (meta_name or meta_title)
+
+        meta_description = lang_data.get('meta_description', '')
+        data['link_rewrite'] = meta_desciption.replace(' ', '-')
+        data['meta_keywords'] = meta_description
+            'name': '',            
+        return
+    # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
-    def create(self, record, lang_record=False):
+    def create(self, record_data, lang_record_db=False):
         ''' Update record
             record: data of ps_product
             lang_record: dict with ID lang: dict of valued
         '''
         if not self._connection:
             return False
-        if not lang_record:    
+        if not lang_record_db:    
             {}
 
         # ---------------------------------------------------------------------
@@ -45,25 +75,37 @@ class mysql_connector():
         field_mandatory = ['reference', 'price']
 
         # Use quote:
-        field_quote = [            
+        field_quote = [  
+            # -----------          
+            # ps_product:
+            # -----------          
             # String:
             'ean13', 'upc', 'redirect_type', 'visibility',
             'condition', 'reference', 'supplier_reference',
             'unity', 'location',
-
             # Date:
             'available_date', 'date_add', 'date_upd',
+            
+            # ----------------      
+            # ps_product_lang:
+            # ----------------     
+            # String
+	        'description', 'description_short', 'link_rewrite',
+	        'meta_description', 'meta_keywords', 'meta_title',
+	        'name',
+	        # Date: 
+	        'available_now', 'available_later',
             ]
 
         # ---------------------------------------------------------------------
         # Update numeric ps_product
         # ---------------------------------------------------------------------
-        record_default = {
+        record = {
             #'id_product':
             'id_supplier': 0,
             'id_manufacturer': 0,
             'id_category_default': 0, # TODO
-            'id_shop_default': 1,
+            'id_shop_default': self.id_shop,
             'id_tax_rules_group': 1,
             'on_sale': 0,
             'online_only': 0,
@@ -108,7 +150,7 @@ class mysql_connector():
             'pack_stock_type': 3,
             }
         
-        record.update(record_default) # Add field passed from ODOO
+        record.update(record_data) # Add field passed from ODOO
 
         fields = values = ''
         for field, value in record.iteritems():
@@ -128,9 +170,55 @@ class mysql_connector():
         query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
         cr.execute(query)
         item_id = self._connection.insert_id()
+        
+        # ---------------------------------------------------------------------
         # Update lang ps_product_lang
-        if not lang_record:
-            return item_id
+        # ---------------------------------------------------------------------
+        import pdb; pdb.set_trace()
+        if not lang_record_db:
+            # Record not created
+            return False #item_id
+
+        for lang, lang_data in lang_record_db.iteritems():
+            id_lang = self.id_langs.get(lang)
+
+            # Default data:
+            record_lang_data = {
+                'id_product': item_id,
+	            'id_shop': self.id_shop,
+	            'id_lang': id_lang,
+	            'description': '',
+	            'description_short': '',
+	            'link_rewrite': '',
+	            'meta_description': '',
+	            'meta_keywords': '',
+	            'meta_title': '',
+	            'name': '',
+	            'available_now': '',
+	            'available_later': '',
+	            }
+	        # Generate extra data and integrate:
+	        self._expand_lang_data(lang_data)	            
+	        record_lang_data.update(lang_data)
+
+            fields = values = ''
+            for field, value in record.iteritems():
+                if fields:
+                    fields += ', '
+                fields += '`%s`' % field
+
+                if values:
+                    values += ', '
+                values += '%s%s%s' % (
+                    '\'' if field in field_quote else '',
+                    value,
+                    '\'' if field in field_quote else '',
+                    )
+                
+            cr = self._connection.cursor()
+            query = 'INSERT INTO ps_product_lang(%s) VALUES (%s);' % (
+                fields, values)
+            cr.execute(query)
                     
         return item_id
 

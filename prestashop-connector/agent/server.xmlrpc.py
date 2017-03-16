@@ -136,7 +136,7 @@ def execute(model, operation, *parameter, **args):
         # ------------------
         elif operation == 'create':
             return mysql_db.create(
-                parameter[0], # Dictionary with record
+                parameter[0], parameter[1], # Dictionary with record
                 )
         
         # ------------------
@@ -169,7 +169,7 @@ def execute(model, operation, *parameter, **args):
             mysql_db._log = parameter[0]
             res['result'] = 'Server log activated' if mysql_db._log \
                 else 'Server log not activated'
-    
+
     # -------------------------------------------------------------------------
     #                                 ERROR:
     # -------------------------------------------------------------------------    
