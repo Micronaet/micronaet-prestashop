@@ -63,7 +63,6 @@ class mysql_connector():
         ''' Update product - category link if present or create
             id_product, id_category, position
         '''
-        import pdb; pdb.set_trace()
         if not self._connection:
             return False
             
@@ -90,6 +89,7 @@ class mysql_connector():
         cr.execute(query)
         item_id = self._connection.insert_id()
         self._connection.commit()
+        return item_id
 
     def create(self, record_data, lang_record_db=False):
         ''' Update record
