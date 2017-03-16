@@ -175,7 +175,6 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Update lang ps_product_lang
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         if not lang_record_db:
             # Record not created
             return False #item_id
