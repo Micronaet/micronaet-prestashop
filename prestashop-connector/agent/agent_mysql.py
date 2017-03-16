@@ -163,7 +163,7 @@ class mysql_connector():
                 domain[1],
                 domain[2],                
                 )
-        if mysql_db._log:
+        if self._log:
             print query
         cr.execute(query)
         return [item['id_product'] for item in cr.fetchall()]
