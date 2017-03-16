@@ -193,10 +193,10 @@ class mysql_connector():
             import pdb; pdb.set_trace()
 
             error = 'Error connecting to database: %s:%s > %s [%s]' % (
-                self.server,
-                self.port,
+                self._server,
+                self._port,
                 self._database,
-                self.user,
+                self._user,
                 )
                 
             self._connection = MySQLdb.connect(
