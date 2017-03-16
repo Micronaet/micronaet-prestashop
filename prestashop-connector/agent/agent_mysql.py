@@ -204,7 +204,7 @@ class mysql_connector():
             record_lang_data.update(lang_data)
 
             fields = values = ''
-            for field, value in record.iteritems():
+            for field, value in record_lang_data.iteritems():
                 if fields:
                     fields += ', '
                 fields += '`%s`' % field
