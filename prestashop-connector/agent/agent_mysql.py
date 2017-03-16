@@ -59,6 +59,37 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
+    def write_category(self, record_data):
+        ''' Update product - category link if present or create
+            id_product, id_category, position
+        '''
+        if not self._connection:
+            return False
+            
+        record = {
+        #    'id_product': 0
+        #    'id_category': 0,
+        #    'position': 0,
+            }
+        record.update(record_data) # Add field passed from ODOO
+
+        fields = values = ''
+        for field, value in record.iteritems():
+            if fields:
+                fields += ', '
+            fields += '`%s`' % field
+
+            if values:
+                values += ', '
+            values += '%s' % value
+            
+        cr = self._connection.cursor()
+        query = 'INSERT INTO ps_category_product(%s) VALUES (%s);' % (
+            fields, values)
+        cr.execute(query)
+        item_id = self._connection.insert_id()
+        self._connection.commit()
+
     def create(self, record_data, lang_record_db=False):
         ''' Update record
             record: data of ps_product

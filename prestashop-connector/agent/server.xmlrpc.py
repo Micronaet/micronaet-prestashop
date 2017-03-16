@@ -154,6 +154,12 @@ def execute(model, operation, *parameter, **args):
         else:
             res['error'] = 'Model %s operation %s not managed!' % (
                 model, operation)            
+
+        # ----------------------------------
+        # 5. Create update product category:
+        # ----------------------------------
+        elif operation == 'write_category':
+            return mysql_db.write_category(parameter[0])
     
     # -------------------------------------------------------------------------
     #                           CATEGORY OPERATIONS:
