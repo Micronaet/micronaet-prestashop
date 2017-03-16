@@ -43,15 +43,9 @@ class mysql_connector():
         # Use quote:
         field_quote = [            
             # String:
-            'ean13',
-            'upc',
-            'redirect_type',
-            'visibility',
-            'condition',
-            'reference',
-            'supplier_reference',
-            'unity',
-            'location',
+            'ean13', 'upc', 'redirect_type', 'visibility',
+            'condition', 'reference', 'supplier_reference',
+            'unity', 'location',
 
             # Date:
             'available_date', 'date_add', 'date_upd',
