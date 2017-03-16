@@ -151,15 +151,15 @@ def execute(model, operation, *parameter, **args):
         elif operation == 'unlink':
             pass
             
-        else:
-            res['error'] = 'Model %s operation %s not managed!' % (
-                model, operation)            
-
         # ----------------------------------
         # 5. Create update product category:
         # ----------------------------------
         elif operation == 'write_category':
             return mysql_db.write_category(parameter[0])
+
+        else:
+            res['error'] = 'Model %s operation %s not managed!' % (
+                model, operation)            
     
     # -------------------------------------------------------------------------
     #                           CATEGORY OPERATIONS:
