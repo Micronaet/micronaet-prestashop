@@ -90,11 +90,11 @@ class mysql_connector():
             # ps_product_lang:
             # ----------------     
             # String
-	        'description', 'description_short', 'link_rewrite',
-	        'meta_description', 'meta_keywords', 'meta_title',
-	        'name',
-	        # Date: 
-	        'available_now', 'available_later',
+            'description', 'description_short', 'link_rewrite',
+            'meta_description', 'meta_keywords', 'meta_title',
+            'name',
+            # Date: 
+            'available_now', 'available_later',
             ]
 
         # ---------------------------------------------------------------------
@@ -187,22 +187,22 @@ class mysql_connector():
             # Default data:
             record_lang_data = {
                 'id_product': item_id,
-	            'id_shop': self.id_shop,
-	            'id_lang': id_lang,
-	            'description': '',
-	            'description_short': '',
-	            'link_rewrite': '',
-	            'meta_description': '',
-	            'meta_keywords': '',
-	            'meta_title': '',
-	            'name': '',
-	            'available_now': '',
-	            'available_later': '',
-	            }
-	            
-	        # Generate extra data and integrate:
-	        self._expand_lang_data(lang_data)
-	        record_lang_data.update(lang_data)
+                'id_shop': self.id_shop,
+                'id_lang': id_lang,
+                'description': '',
+                'description_short': '',
+                'link_rewrite': '',
+                'meta_description': '',
+                'meta_keywords': '',
+                'meta_title': '',
+                'name': '',
+                'available_now': '',
+                'available_later': '',
+                }
+                
+            # Generate extra data and integrate:
+            self._expand_lang_data(lang_data)
+            record_lang_data.update(lang_data)
 
             fields = values = ''
             for field, value in record.iteritems():
