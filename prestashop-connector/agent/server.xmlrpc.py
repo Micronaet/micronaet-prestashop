@@ -97,6 +97,8 @@ server.register_introspection_functions()
 # -----------------------------------------------------------------------------
 def execute(model, operation, *parameter, **args):
     ''' Collect a list of function for common operations            
+        parameter: list of element used in operation
+        args: dict of parameter (name, data)
     '''
     # Setup result dict:
     res = {

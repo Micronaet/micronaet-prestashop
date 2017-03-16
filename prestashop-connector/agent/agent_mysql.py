@@ -29,11 +29,15 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
-    def create(self, record):
+    def create(self, record, lang_record=False):
         ''' Update record
+            record: data of ps_product
+            lang_record: dict with ID lang: dict of valued
         '''
         if not self.connection:
             return False
+        if not lang_record:    
+            {}
 
         # ---------------------------------------------------------------------
         # Fields validation:
@@ -122,10 +126,13 @@ class mysql_connector():
             
         cr = self.connection.cursor()
         query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
-        item_id = cr.execute(query)
-        
+        cr.execute(query)
+        item_id = self.connection.insert_id()
         # Update lang ps_product_lang
+        if not lang_record:
+            return item_id
         
+            
         return item_id
 
     def write(self, **parameter):
