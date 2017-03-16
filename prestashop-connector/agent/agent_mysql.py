@@ -46,7 +46,7 @@ class mysql_connector():
         if not lang_data:
             return {}
         
-        name = lang_data.get('name', '')        
+        name = lang_data.get('name', '')
         meta_title = lang_data.get('meta_title', '')
         data['description'] = '<p>%s</p>' % (meta_title or meta_name)
         data['description_short'] = '<p>%s</p>' % (meta_name or meta_title)
@@ -55,6 +55,7 @@ class mysql_connector():
         data['link_rewrite'] = meta_desciption.replace(' ', '-')
         data['meta_keywords'] = meta_description
         return
+        
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
@@ -198,8 +199,9 @@ class mysql_connector():
 	            'available_now': '',
 	            'available_later': '',
 	            }
+	            
 	        # Generate extra data and integrate:
-	        self._expand_lang_data(lang_data)	            
+	        self._expand_lang_data(lang_data)
 	        record_lang_data.update(lang_data)
 
             fields = values = ''
