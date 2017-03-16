@@ -115,10 +115,9 @@ def execute(model, operation, *parameter, **args):
         # ------------------
         # 1. Search product:
         # ------------------
-        import pdb; pdb.set_trace()
         if operation == 'search':
             return mysql_db.search(
-                 parameter[0][1], # domain filter only one condition
+                 parameter[0][0], # domain filter only one condition
                  )
         
         # ------------------
