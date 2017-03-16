@@ -150,6 +150,7 @@ class mysql_connector():
         ''' Search product
             parameter = [('field', 'operator', 'value')]
         '''
+        
         if not self._connection:
             return False
         cr = self._connection.cursor()
@@ -189,6 +190,7 @@ class mysql_connector():
         try:            
             error = 'Error no MySQLdb installed'
             import MySQLdb, MySQLdb.cursors
+            import pdb; pdb.set_trace()
 
             error = 'Error connecting to database: %s:%s > %s [%s]' % (
                 self.server,

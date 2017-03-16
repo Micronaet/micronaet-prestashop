@@ -75,7 +75,12 @@ try:
     mysql_db = agent_mysql.mysql_connector(
         database, user, password, server, port
         )
-    print 'Connected %s:%s %s-%s' % (server, port, database, user)    
+    if mysql_db._connected:    
+        print '[INFO] Connected %s:%s %s-%s' % (
+            server, port, database, user)    
+    else:    
+        print '[ERROR] Not Connected %s:%s %s-%s' % (
+            server, port, database, user)    
     
 except:
     print 'Cannot read MYSQL data access!'
