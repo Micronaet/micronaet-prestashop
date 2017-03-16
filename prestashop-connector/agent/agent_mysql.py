@@ -34,7 +34,7 @@ class mysql_connector():
             record: data of ps_product
             lang_record: dict with ID lang: dict of valued
         '''
-        if not self.connection:
+        if not self._connection:
             return False
         if not lang_record:    
             {}
@@ -124,15 +124,14 @@ class mysql_connector():
                 '\'' if field in field_quote else '',
                 )
             
-        cr = self.connection.cursor()
+        cr = self._connection.cursor()
         query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
         cr.execute(query)
-        item_id = self.connection.insert_id()
+        item_id = self._connection.insert_id()
         # Update lang ps_product_lang
         if not lang_record:
             return item_id
-        
-            
+                    
         return item_id
 
     def write(self, **parameter):
@@ -151,9 +150,9 @@ class mysql_connector():
         ''' Search product
             parameter = [('field', 'operator', 'value')]
         '''
-        if not self.connection:
+        if not self._connection:
             return False
-        cr = self.connection.cursor()
+        cr = self._connection.cursor()
         query = '''
             SELECT id_product
             FROM ps_product
@@ -163,7 +162,8 @@ class mysql_connector():
                 domain[1],
                 domain[2],                
                 )
-        print query
+        if mysql_db._log:
+            print query
         cr.execute(query)
         return [item['id_product'] for item in cr.fetchall()]
 
@@ -175,14 +175,16 @@ class mysql_connector():
         ''' Init procedure        
         '''
         # Save parameters:
-        self.database = database
-        self.user = user
-        self.password = password
-        self.server = server or 'localhost'
-        self.port = port or 3306
-        self.charset = charset
-        self.status = 'connected'
-        self.connected = True
+        self._database = database
+        self._user = user
+        self._password = password
+        self._server = server or 'localhost'
+        self._port = port or 3306
+        self._charset = charset
+        self._status = 'connected'
+        self._connected = True
+        
+        self._log = False # no log
         
         try:            
             error = 'Error no MySQLdb installed'
@@ -191,21 +193,21 @@ class mysql_connector():
             error = 'Error connecting to database: %s:%s > %s [%s]' % (
                 self.server,
                 self.port,
-                self.database,
+                self._database,
                 self.user,
                 )
                 
             self.connection = MySQLdb.connect(
-                host=self.server,
-                user=self.user,
-                passwd=self.password,
-                db=self.database,
+                host=self._server,
+                user=self._user,
+                passwd=self._password,
+                db=self._database,
                 cursorclass=MySQLdb.cursors.DictCursor,
-                charset=self.charset,
+                charset=self._charset,
                 )                        
         except:
-            self.status = error
-            self.connected = False
+            self._status = error
+            self._connected = False
         return
     
 # -----------------------------------------------------------------------------

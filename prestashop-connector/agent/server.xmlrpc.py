@@ -43,40 +43,44 @@ ps_settings = config.get('Prestashop', 'settings') # Configuration file
 # Mysql parameters:
 # -----------------
 # Read PHP config file:
-for line in open(ps_settings, 'r'):
-    line = line.strip()
-    line = line[:-1] # no ;
-    line = line.replace('define', '')
-    try:
-        param = eval(line)
-    except:
-        continue # not evaulable line    
-    if type(param) == tuple:
-            
-        if param[0] == '_DB_USER_':
-            user = param[1]
-        if param[0] == '_DB_PASSWD_':
-            password = param[1]
-        if param[0] == '_DB_PREFIX_':
-            prefix = param[1]
+try:
+    for line in open(ps_settings, 'r'):
+        line = line.strip()
+        line = line[:-1] # no ;
+        line = line.replace('define', '')
+        try:
+            param = eval(line)
+        except:
+            continue # not evaluable line    
+        if type(param) == tuple:
+                
+            if param[0] == '_DB_USER_':
+                user = param[1]
+            if param[0] == '_DB_PASSWD_':
+                password = param[1]
+            if param[0] == '_DB_PREFIX_':
+                prefix = param[1]
 
-        if param[0] == '_DB_SERVER_':
-            server = param[1]
-        if param[0] == '_DB_NAME_':
-            database = param[1]
+            if param[0] == '_DB_SERVER_':
+                server = param[1]
+            if param[0] == '_DB_NAME_':
+                database = param[1]
 
-port = 3306 # use default
-
-if not all((user, password, database, server, port)):    
-    print 'Cannot connect, some parameter missing!'
-    sys.exit()
+    port = 3306 # use default
+    if not all((user, password, database, server, port)):    
+        print 'Cannot connect, some parameter missing!'
+        sys.exit()
+        
+    # Connect obj
+    mysql_db = agent_mysql.mysql_connector(
+        database, user, password, server, port
+        )
+    print 'Connected %s:%s %s-%s' % (server, port, database, user)    
     
+except:
+    print 'Cannot read MYSQL data access Demo mode!'
+    mysql_db = False # no file 
 
-# Connect obj
-mysql_db = agent_mysql.mysql_connector(
-    database, user, password, server, port
-    )
-print 'Connected %s:%s %s-%s' % (server, port, database, user)
 # -----------------------------------------------------------------------------
 #                         Restrict to a particular path
 # -----------------------------------------------------------------------------
@@ -152,6 +156,17 @@ def execute(model, operation, *parameter, **args):
     elif model == 'category':
         pass
     
+
+    # -------------------------------------------------------------------------
+    #                             SYSTEM OPERATIONS:
+    # -------------------------------------------------------------------------    
+    elif model == 'system':
+        if operation == 'log':
+            mysql_db._log = parameter[0]
+    
+    # -------------------------------------------------------------------------
+    #                                 ERROR:
+    # -------------------------------------------------------------------------    
     else:
         res['error'] = 'Model %s not managed!' % model
         
