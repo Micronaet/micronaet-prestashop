@@ -197,7 +197,7 @@ class mysql_connector():
                 self.user,
                 )
                 
-            self.connection = MySQLdb.connect(
+            self._connection = MySQLdb.connect(
                 host=self._server,
                 user=self._user,
                 passwd=self._password,
