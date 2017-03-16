@@ -39,19 +39,19 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                              Utility function:
     # -------------------------------------------------------------------------
-    def _expand_lang_data(self, lang_data):
+    def _expand_lang_data(self, data):
         ''' Generate extra data for SEO management
             mandatory: name, meta_title, meta_description            
         '''
-        if not lang_data:
+        if not data:
             return {}
         
-        name = lang_data.get('name', '')
-        meta_title = lang_data.get('meta_title', '')
+        name = data.get('name', '')
+        meta_title = data.get('meta_title', '')
         data['description'] = '<p>%s</p>' % (meta_title or meta_name)
         data['description_short'] = '<p>%s</p>' % (meta_name or meta_title)
 
-        meta_description = lang_data.get('meta_description', '')
+        meta_description = data.get('meta_description', '')
         data['link_rewrite'] = meta_desciption.replace(' ', '-')
         data['meta_keywords'] = meta_description
         return
