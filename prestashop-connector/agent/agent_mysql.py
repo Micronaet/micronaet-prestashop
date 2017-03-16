@@ -63,6 +63,7 @@ class mysql_connector():
         ''' Update product - category link if present or create
             id_product, id_category, position
         '''
+        import pdb; pdb.set_trace()
         if not self._connection:
             return False
             
