@@ -48,8 +48,8 @@ class mysql_connector():
         
         name = data.get('name', '')
         meta_title = data.get('meta_title', '')
-        data['description'] = '<p>%s</p>' % (meta_title or meta_name)
-        data['description_short'] = '<p>%s</p>' % (meta_name or meta_title)
+        data['description'] = '<p>%s</p>' % (meta_title or name)
+        data['description_short'] = '<p>%s</p>' % (name or meta_title)
 
         meta_description = data.get('meta_description', '')
         data['link_rewrite'] = meta_desciption.replace(' ', '-')
