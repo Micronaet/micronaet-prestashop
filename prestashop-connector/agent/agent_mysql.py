@@ -170,6 +170,7 @@ class mysql_connector():
         query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
         cr.execute(query)
         item_id = self._connection.insert_id()
+        self._connection.commit()
         
         # ---------------------------------------------------------------------
         # Update lang ps_product_lang
@@ -219,6 +220,7 @@ class mysql_connector():
             query = 'INSERT INTO ps_product_lang(%s) VALUES (%s);' % (
                 fields, values)
             cr.execute(query)
+            self._connection.commit()
                     
         return item_id
 
