@@ -181,6 +181,7 @@ class mysql_connector():
 
         for lang, lang_data in lang_record_db.iteritems():
             id_lang = self.id_langs.get(lang)
+            # TODO check if lang is correct
 
             # Default data:
             record_lang_data = {
