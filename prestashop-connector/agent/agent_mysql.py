@@ -39,6 +39,7 @@ class mysql_connector():
         }
 
     id_image_type = {
+        '': (100, 100), # empty default image
      	'cart_default': (80, 80),
 	    'small_default': (98, 98),
 	    'medium_default': (125, 125),
@@ -126,7 +127,7 @@ class mysql_connector():
 
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
 
-        import pdb; pdb.set_trace()        
+        import pdb; pdb.set_trace()
         try:
             image_list = self.id_image_type.iteritems()
             image_list.append(('', (100, 100))) # TODO change
