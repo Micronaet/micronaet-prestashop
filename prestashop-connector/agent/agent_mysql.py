@@ -108,7 +108,7 @@ class mysql_connector():
             
         field_quote = [] # all numeric
         record = { # Direct not updated:
-            'id_product': id_product
+            'id_product': id_product,
             'id_category': id_category,
             'position': position,
             }
