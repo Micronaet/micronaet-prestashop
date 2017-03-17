@@ -116,8 +116,8 @@ def execute(model, operation, *parameter, **args):
         'note': False
         }
     
-    print '[INFO] Execute: Model %s - Operation %s - Parameter list: %s' % (
-        model, operation, parameter)
+    #print '[INFO] Execute: Model %s - Operation %s - Parameter list: %s' % (
+    #    model, operation, parameter)
 
     # -------------------------------------------------------------------------
     #                           PRODUCT OPERATIONS:
