@@ -313,7 +313,6 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Update product category block:
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         record_category['id_product'] = item_id
         self.write_category(record_category)            
         return item_id
@@ -324,7 +323,7 @@ class mysql_connector():
         item_id = parameter['item_id']
         record = parameter['record']
         
-        # Update numeric ps_product 
+        # Update numeric ps_product
         
         # Update lang ps_product_lang
         
