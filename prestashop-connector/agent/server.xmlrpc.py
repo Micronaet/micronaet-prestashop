@@ -134,6 +134,7 @@ def execute(model, operation, *parameter, **args):
         # ------------------
         # 2. Create product:
         # ------------------
+        import pdb; pdb.set_trace()
         elif operation == 'create':
             return mysql_db.create(*parameter, **args)
         
