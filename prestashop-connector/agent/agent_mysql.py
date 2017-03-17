@@ -62,7 +62,11 @@ class mysql_connector():
         if size: # else no resize
             origin = Image.open(from_image)
             resized = origin.resize(size, Image.ANTIALIAS)
-            resized.save(to_image, self.ext_out.upper())
+
+            image_type = 'JPEG' if self.ext_out.upper() == 'JPG' else\
+                self.ext_out.upper()
+            
+            resized.save(to_image, image_type)
         return True
         
     def _prepare_mysql_query(self, mode, record, table, field_quote=None):
@@ -137,7 +141,7 @@ class mysql_connector():
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
 
         image_list = self.id_image_type.iteritems()
-        import pdb; pdb.set_trace()
+
         for image_type, size in image_list:
             image_out = os.path.join(
                 path_image_out,
@@ -158,8 +162,8 @@ class mysql_connector():
                 
             if self._log:
                 print '[INFO] Image %s > %s' % (image_in, image_out)
-            os.system('chown -R www-data:www-data %s' % path_image_out)
-            os.system('chmod -R 775 %s' % path_image_out)
+        os.system('chown -R www-data:www-data %s' % path_image_out)
+        os.system('chmod -R 775 %s' % path_image_out)
             
         return True
         
