@@ -137,6 +137,7 @@ class mysql_connector():
     def write_image(self, record_data, reference, update_image=False):
         ''' Create image record for product and generate image in asked
         '''
+        import pdb; pdb.set_trace()
         if not self._connection:
             return False
 
