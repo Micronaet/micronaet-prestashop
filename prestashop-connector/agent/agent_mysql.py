@@ -173,7 +173,6 @@ class mysql_connector():
             record: data of product
             lang_record: dict with ID lang: dict of valued
         '''
-        import pdb; pdb.set_trace()
         if not self._connection:
             return False
             
@@ -264,7 +263,6 @@ class mysql_connector():
             }        
         record.update(record_data) # Add field passed from ODOO
 
-        import pdb; pdb.set_trace()
         query = self._prepare_insert_query(record, 'product', field_quote)
         cr = self._connection.cursor()
         cr.execute(query)
@@ -317,7 +315,7 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         import pdb; pdb.set_trace()
         record_category['id_product'] = item_id
-        write_category(record_category)            
+        self.write_category(record_category)            
         return item_id
 
     def write(self, **parameter):
