@@ -139,6 +139,7 @@ class mysql_connector():
                     ),
                 )
             try:
+                # TODO redim image here:
                 shutil.copyfile(image_in, image_out)
             except:
                  print '[ERROR] Cannot move image: %s' % image_in
