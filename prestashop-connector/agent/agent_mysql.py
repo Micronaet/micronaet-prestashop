@@ -36,14 +36,14 @@ class mysql_connector():
         'it_IT': 1,
         'en_US': 2,
         }
-    
+
     # -------------------------------------------------------------------------
     #                              Utility function:
     # -------------------------------------------------------------------------
     def _prepare_insert_query(self, record, table, field_quote=None):
         ''' Prepare insert query passing record and quoted field list
         '''
-        if field_quote in None:
+        if field_quote is None:
             field_quote = []
         
         table = '%s_%s' % (self._prefix, table)
@@ -62,8 +62,7 @@ class mysql_connector():
             table, fields, values)        
         if self._log:
             print query
-        return query    
-    
+        return query
         
     def _expand_lang_data(self, data):
         ''' Generate extra data for SEO management
