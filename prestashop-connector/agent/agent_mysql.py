@@ -294,6 +294,7 @@ class mysql_connector():
         record_category = parameter[2]
         
         # Parameter name-value explode:
+        import pdb; pdb.set_trace()
         update_image = parameter_args.get('update_image', False)
         reference = record_data.get('reference', False) # For image name
         
