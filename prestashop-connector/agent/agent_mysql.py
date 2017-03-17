@@ -67,6 +67,9 @@ class mysql_connector():
                 self.ext_out.upper()
             
             resized.save(to_image, image_type)
+        else:
+            shutil.copyfile(from_image, to_image)
+            
         return True
         
     def _prepare_mysql_query(self, mode, record, table, field_quote=None):
@@ -153,8 +156,6 @@ class mysql_connector():
                     ),
                 )
             try:
-                # TODO redim image here:
-                #shutil.copyfile(image_in, image_out)
                 self.resize_image(image_in, image_out, size)
             except:
                  print '[ERROR] Cannot move image: %s' % image_in
