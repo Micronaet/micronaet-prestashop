@@ -37,6 +37,17 @@ class mysql_connector():
         'en_US': 2,
         }
 
+    id_image_type = {
+     	'cart_default': (80, 80),
+	    'small_default': (98, 98),
+	    'medium_default': (125, 125),
+	    'home_default': (250, 250),
+	    'large_default': (458, 458),
+	    'thickbox_default': (800, 800),
+	    'category_default': (870, 217),
+	    'scene_default': (870, 270),
+	    'm_scene_default': (161 ,58),
+	    }
     # -------------------------------------------------------------------------
     #                              Utility function:
     # -------------------------------------------------------------------------
@@ -87,6 +98,42 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
+    def update_image(self, reference, id_image):
+        ''' Update image reference in rsync folder to prestashop path        
+        '''
+        import pdb; pdb.set_trace()
+        root_path = '/var/www/html/2015.redesiderio.it/site/public/https' 
+
+        path_in = os.path.join(root_path, 'img/odoo')
+        ext_in = 'jpg'
+
+        path_out = os.path.join(root_path, 'img/p',)
+        ext_out = 'jpg'
+
+        # Create origin image:
+        image_in = os.path.join(
+            path_in, 
+            '%s.%s' % (
+                reference.replace(' ', '_'), 
+                ext_in,
+                ),
+            )
+
+        # Create destination folder:
+        key_image = str(id_image)
+        key_folder = [item for item in key_image]
+        path_out = os.path.join(path_out, *key_folder)
+        os.system('mkdir -p %s') # Create all image folder if needed
+        
+        for image_type, dimension in self.id_image_type:
+            image_out = '%s%s.%s' % (
+                path_out,
+                key_image, 
+                ext_out,
+                )
+                
+        return True
+        
     def write_image(self, record_data, reference, update_image=False):
         ''' Create image record for product and generate image in asked
         '''
@@ -98,12 +145,12 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Create image record
         # ---------------------------------------------------------------------
-        field_quote = ['cover', 'legend'] # unique for all
+        field_quote = ['legend', ] # unique for all
         record = { # Direct not updated:
             # id_image
             'id_product': 0,
             'position': 1,
-            'cover': '',
+            'cover': 0, # XXX ???
             }
         record.update(record_data)  
         query = self._prepare_mysql_query(
@@ -149,8 +196,7 @@ class mysql_connector():
         # Redim image in correct folder:
         # ---------------------------------------------------------------------
         if update_image:  
-            pass        
-        
+            self.update_image(reference, id_image)
         return id_image
         
     def write_category(self, record_data):
