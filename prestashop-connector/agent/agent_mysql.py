@@ -147,7 +147,7 @@ class mysql_connector():
             os.system('chmod -R 775 %s' % path_image_out)
         except:
              print '[ERROR] Cannot move image: %s' % image_in
-            continue
+             return False
             
         return True
         
