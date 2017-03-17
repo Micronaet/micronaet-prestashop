@@ -171,7 +171,7 @@ class mysql_connector():
 	        
         return True
 
-        def create(self, *parameter, **parameter_args):
+    def create(self, *parameter, **parameter_args):
         ''' Update record
             record: data of product
             lang_record: dict with ID lang: dict of valued
