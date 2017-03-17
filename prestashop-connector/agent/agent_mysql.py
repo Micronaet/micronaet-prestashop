@@ -111,13 +111,13 @@ class mysql_connector():
         cr = self._connection.cursor()
         cr.execute(query)
         id_image = self._connection.insert_id()
-        import pdb; pdb.set_trace()
         self._connection.commit()        
         
         # ---------------------------------------------------------------------
         # Create image_lang (now X lang empty fields)
         # ---------------------------------------------------------------------
-        for lang, id_lang in id_langs.iteritems():
+        import pdb; pdb.set_trace()
+        for lang, id_lang in self.id_langs.iteritems():
             record = { # Direct not updated:
                 'id_image': id_image,
                 'id_lang': id_lang,
