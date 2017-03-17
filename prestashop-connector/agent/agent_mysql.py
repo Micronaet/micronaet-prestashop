@@ -40,28 +40,31 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                              Utility function:
     # -------------------------------------------------------------------------
-    def _prepare_insert_query(self, record, table, field_quote=None):
+    def _prepare_mysql_query(self, mode, record, table, field_quote=None):
         ''' Prepare insert query passing record and quoted field list
         '''
         if field_quote is None:
             field_quote = []
         
-        table = '%s_%s' % (self._prefix, table)
-        fields = values = ''
-        for field, value in record.iteritems():
-            if fields:
-                fields += ', '
-            fields += '`%s`' % field
+        if mode == 'insert':
+            table = '%s_%s' % (self._prefix, table)
+            fields = values = ''
+            for field, value in record.iteritems():
+                if fields:
+                    fields += ', '
+                fields += '`%s`' % field
 
-            quote = '\'' if field in field_quote else ''
-            if values:
-                values += ', '
-            values += '%s%s%s' % (quote, value, quote)
-            
-        query = 'INSERT INTO %s(%s) VALUES (%s);' % (
-            table, fields, values)        
-        if self._log:
-            print query
+                quote = '\'' if field in field_quote else ''
+                if values:
+                    values += ', '
+                values += '%s%s%s' % (quote, value, quote)
+                
+            query = 'INSERT INTO %s(%s) VALUES (%s);' % (
+                table, fields, values)        
+            if self._log:
+                print query
+        elif mode == 'update':        
+            pass
         return query
         
     def _expand_lang_data(self, data):
@@ -111,7 +114,7 @@ class mysql_connector():
             'id_category': id_category,
             'position': position,
             }
-        query = self._prepare_insert_query(
+        query = self._prepare_mysql_query('insert',
             record, 'category_product', field_quote)
 
         cr = self._connection.cursor()
@@ -160,7 +163,7 @@ class mysql_connector():
 	        }	
 	        
         # Crete and execute query:
-        query = self._prepare_insert_query(
+        query = self._prepare_mysql_query('insert',
             record, 'product_shop', field_quote)
         cr = self._connection.cursor()
         cr.execute(query)
@@ -168,18 +171,21 @@ class mysql_connector():
 	        
         return True
 
-    def create(self, record_data, lang_record_db=False, record_category=False):
+    def create(self, *parameter, **args)):
         ''' Update record
             record: data of product
             lang_record: dict with ID lang: dict of valued
         '''
+        # Parameter liste explode:
+        record_data = parameter[0]
+        lang_record_db = parameter[1] 
+        record_category = parameter[2]
+        
+        # Parameter name-value explode:
+        update_image = args.get('update_image', False)
+        
         if not self._connection:
             return False
-            
-        if not lang_record_db:    
-            lang_record_db = {}
-        if not record_category:    
-            record_category = {}
 
         # ---------------------------------------------------------------------
         # Fields validation:
@@ -263,7 +269,7 @@ class mysql_connector():
             }        
         record.update(record_data) # Add field passed from ODOO
 
-        query = self._prepare_insert_query(record, 'product', field_quote)
+        query = self._prepare_mysql_query('insert', record, 'product', field_quote)
         cr = self._connection.cursor()
         cr.execute(query)
         item_id = self._connection.insert_id()
@@ -304,7 +310,7 @@ class mysql_connector():
             record_lang_data.update(lang_data)
             
             # Prepare and run query:
-            query = self._prepare_insert_query(
+            query = self._prepare_mysql_query('insert',
                 record_lang_data, 'product_lang', field_quote)                
             cr = self._connection.cursor()
             cr.execute(query)

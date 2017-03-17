@@ -135,9 +135,7 @@ def execute(model, operation, *parameter, **args):
         # 2. Create product:
         # ------------------
         elif operation == 'create':
-            return mysql_db.create(
-                parameter[0], parameter[1], parameter[2] # 3 records
-                )
+            return mysql_db.create(*parameter, **args)
         
         # ------------------
         # 3. Update product:
