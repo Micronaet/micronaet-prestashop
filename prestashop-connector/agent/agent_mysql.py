@@ -123,7 +123,7 @@ class mysql_connector():
         key_image = str(id_image)
         key_folder = [item for item in key_image]
         path_out = os.path.join(path_out, *key_folder)
-        import pdb; pdb.set_trace()
+
         os.system('mkdir -p %s' % path_out) # Create all image folder if needed
         for image_type, dimension in self.id_image_type.iteritems():
             image_out = os.path.join(
@@ -137,9 +137,11 @@ class mysql_connector():
             try:     
                 shutil.copyfile(image_in, image_out)
             except:
-                import pdb; pdb.set_trace() 
+                print '[ERROR] Cannot move image: %s' % image_out
+                continue
+                
             if self._log:
-                print '[INFO] Image %s > %s' % image_in, image_out
+                print '[INFO] Image %s > %s' % (image_in, image_out)
         return True
         
     def write_image(self, record_data, reference, update_image=False):
