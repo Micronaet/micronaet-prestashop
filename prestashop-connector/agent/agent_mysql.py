@@ -136,6 +136,7 @@ class mysql_connector():
                 )               
             try:     
                 shutil.copyfile(image_in, image_out)
+                import pdb; pdb.set_trace()
             except:
                 print '[ERROR] Cannot move image: %s' % image_out
                 continue
