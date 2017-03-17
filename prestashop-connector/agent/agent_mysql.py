@@ -128,7 +128,6 @@ class mysql_connector():
             image_out = os.path.join(
                 path_out,
                 '%s-%s.%s' % (
-                    path_out,
                     key_image, 
                     image_type
                     ext_out,
