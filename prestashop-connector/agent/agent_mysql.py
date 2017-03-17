@@ -43,8 +43,8 @@ class mysql_connector():
     def _prepare_insert_query(self, record, table, field_quote=None):
         ''' Prepare insert query passing record and quoted field list
         '''
-        if quote_field in None:
-            quote_field = []
+        if field_quote in None:
+            field_quote = []
         
         table = '%s_%s' % (self._prefix, table)
         fields = values = ''
