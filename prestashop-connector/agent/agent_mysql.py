@@ -20,6 +20,7 @@
 import os
 import sys
 import shutil
+from PIL import Image
 
 # -----------------------------------------------------------------------------
 #                                MYSQL CLASS
@@ -37,9 +38,11 @@ class mysql_connector():
         'it_IT': 1,
         'en_US': 2,
         }
+    ext_in = 'jpg'
+    ext_out = 'jpg'    
 
     id_image_type = {
-        '': (100, 100), # empty default image
+        '': False, # empty default image no resize for now
      	'cart_default': (80, 80),
 	    'small_default': (98, 98),
 	    'medium_default': (125, 125),
@@ -53,6 +56,15 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                              Utility function:
     # -------------------------------------------------------------------------
+    def resize_image(self, from_image, to_image, size):
+        ''' Resize image as indicated in Mysql table
+        '''
+        if size: # else no resize
+            origin = Image.open(from_image)
+            resized = origin.resize(size, Image.ANTIALIAS)
+            resized.save(to_image, self.ext_out.upper())
+        return True
+        
     def _prepare_mysql_query(self, mode, record, table, field_quote=None):
         ''' Prepare insert query passing record and quoted field list
         '''
@@ -105,18 +117,15 @@ class mysql_connector():
         '''
         root_path = '/var/www/html/2015.redesiderio.it/site/public/https' 
 
-        path_in = os.path.join(root_path, 'img/odoo')
-        ext_in = 'jpg'
-
+        path_in = os.path.join(root_path, 'img/odoo')        
         path_out = os.path.join(root_path, 'img/p',)
-        ext_out = 'jpg'
-
+        
         # Create origin image:
         image_in = os.path.join(
             path_in, 
             '%s.%s' % (
                 reference.replace(' ', '_'), 
-                ext_in,
+                self.ext_in,
                 ),
             )
 
@@ -128,19 +137,20 @@ class mysql_connector():
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
 
         image_list = self.id_image_type.iteritems()
-        for image_type, dimension in image_list:
+        for image_type, size in image_list:
             image_out = os.path.join(
                 path_image_out,
                 '%s%s%s.%s' % (
                     key_image, # ID image
                     '-' if image_type else '', # separator -
                     image_type or '', # name of image type
-                    ext_out, # extension
+                    self.ext_out, # extension
                     ),
                 )
             try:
                 # TODO redim image here:
-                shutil.copyfile(image_in, image_out)
+                #shutil.copyfile(image_in, image_out)
+                self.resize_image(from_image, to_image, size)
             except:
                  print '[ERROR] Cannot move image: %s' % image_in
                  continue
