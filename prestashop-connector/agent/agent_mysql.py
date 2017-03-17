@@ -123,9 +123,9 @@ class mysql_connector():
         key_folder = [item for item in key_image]
         path_out = os.path.join(path_out, *key_folder)
         os.system('mkdir -p %s') # Create all image folder if needed
-        
+        import pdb; pdb.set_trace()
         for image_type, dimension in self.id_image_type.iteritems():
-            image_out = '%s%s.%s' % (
+            image_out = '%s-%s.%s' % (
                 path_out,
                 key_image, 
                 ext_out,
@@ -194,7 +194,6 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Redim image in correct folder:
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         if update_image:
             self.update_image_file(reference, id_image)
         return id_image
