@@ -141,7 +141,7 @@ class mysql_connector():
             }                
         #record.update(record_data)  
         query = self._prepare_mysql_query(
-            'insert', record, 'image_lang', field_quote)
+            'insert', record, 'image_shop', field_quote)
         cr = self._connection.cursor()
         cr.execute(query)
         self._connection.commit()        
@@ -149,7 +149,8 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Redim image in correct folder:
         # ---------------------------------------------------------------------
-        
+        if update_image:  
+            pass        
         
         return id_image
         
