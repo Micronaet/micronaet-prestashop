@@ -24,7 +24,7 @@ import sys
 #                                MYSQL CLASS
 # -----------------------------------------------------------------------------
 class mysql_connector():
-    ''' MySQL connector
+    ''' MySQL connector for MySQL database
     '''
     # -------------------------------------------------------------------------
     # Parameters for defaults:
@@ -116,7 +116,6 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Create image_lang (now X lang empty fields)
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         for lang, id_lang in self.id_langs.iteritems():
             record = { # Direct not updated:
                 'id_image': id_image,
