@@ -137,7 +137,7 @@ class mysql_connector():
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
 
         image_list = self.id_image_type.iteritems()
-        import pdb; pdb.set_trace()
+
         for image_type, size in image_list:
             image_out = os.path.join(
                 path_image_out,
@@ -151,7 +151,7 @@ class mysql_connector():
             try:
                 # TODO redim image here:
                 #shutil.copyfile(image_in, image_out)
-                self.resize_image(from_image, to_image, size)
+                self.resize_image(image_in, image_out, size)
             except:
                  print '[ERROR] Cannot move image: %s' % image_in
                  continue
