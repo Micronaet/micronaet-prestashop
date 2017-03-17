@@ -58,8 +58,12 @@ class mysql_connector():
                 values += ', '
             values += '%s%s%s' % (quote, value, quote)
             
-        return 'INSERT INTO %s(%s) VALUES (%s);' % (
+        query = 'INSERT INTO %s(%s) VALUES (%s);' % (
             table, fields, values)        
+        if self._log:
+            print query
+        return query    
+    
         
     def _expand_lang_data(self, data):
         ''' Generate extra data for SEO management
