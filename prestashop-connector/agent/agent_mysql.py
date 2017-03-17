@@ -183,7 +183,7 @@ class mysql_connector():
         record = { # Direct not updated:
             'id_image': id_image,
             'id_shop': self.id_shop,
-            'cover': '',
+            'cover': 0,
             'id_product': id_product,
             }                
         #record.update(record_data)  
