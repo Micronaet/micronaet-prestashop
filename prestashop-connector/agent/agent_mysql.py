@@ -132,8 +132,11 @@ class mysql_connector():
                     image_type,
                     ext_out,
                     ),
-                )                
-            shutil.copyfile(image_in, image_out)
+                )               
+            try:     
+                shutil.copyfile(image_in, image_out)
+            except:
+                import pdb; pdb.set_trace() 
             if self._log:
                 print '[INFO] Image %s > %s' % image_in, image_out
         return True
