@@ -19,6 +19,7 @@
 ###############################################################################
 import os
 import sys
+import shutil
 
 # -----------------------------------------------------------------------------
 #                                MYSQL CLASS
@@ -123,7 +124,6 @@ class mysql_connector():
         key_folder = [item for item in key_image]
         path_out = os.path.join(path_out, *key_folder)
         os.system('mkdir -p %s') # Create all image folder if needed
-        import pdb; pdb.set_trace()
         for image_type, dimension in self.id_image_type.iteritems():
             image_out = os.path.join(
                 path_out,
@@ -132,8 +132,10 @@ class mysql_connector():
                     image_type,
                     ext_out,
                     ),
-                )
-                
+                )                
+            shutil.copyfile(image_in, image_out)
+            if self._log:
+                print '[INFO] Image %s > %s' % image_in, image_out
         return True
         
     def write_image(self, record_data, reference, update_image=False):
