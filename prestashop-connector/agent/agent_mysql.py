@@ -31,6 +31,7 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     # TODO manage in other mode!
     id_shop = 1
+    pack_stock_type = 3
     id_langs = {
         'it_IT': 1,
         'en_US': 2,
@@ -39,6 +40,27 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                              Utility function:
     # -------------------------------------------------------------------------
+    def _prepare_insert_query(self, record, table, field_quote=None):
+        ''' Prepare insert query passing record and quoted field list
+        '''
+        if quote_field in None:
+            quote_field = []
+        
+        table = '%s_%s' % (self._prefix, table)
+        fields = values = ''
+        for field, value in record.iteritems():
+            if fields:
+                fields += ', '
+            fields += '`%s`' % field
+
+            quote = '\'' if field in field_quote else ''
+            if values:
+                values += ', '
+            values += '%s%s%s' % (quote, value, quote)
+            
+        return 'INSERT INTO %s(%s) VALUES (%s);' % (
+            table, fields, values)        
+        
     def _expand_lang_data(self, data):
         ''' Generate extra data for SEO management
             mandatory: name, meta_title, meta_description            
@@ -61,55 +83,110 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     def write_category(self, record_data):
         ''' Update product - category link if present or create
-            id_product, id_category, position
+            product_shop: id_product, id_category, position  
+            category_product: price 
         '''
         if not self._connection:
             return False
             
-        record = {
-        #    'id_product': 0
-        #    'id_category': 0,
-        #    'position': 0,
-            }
-        record.update(record_data) # Add field passed from ODOO
+        # TODO check mandatory fields
+        # ---------------------------------------------------------------------
+        # category_product
+        # ---------------------------------------------------------------------        
+        id_product = record_data.get('id_product', False)
+        id_category = record_data.get('id_category', False)
+        position = record_data.get('position', False)
+        price = record_data.get('price', False)
 
-        fields = values = ''
-        for field, value in record.iteritems():
-            if fields:
-                fields += ', '
-            fields += '`%s`' % field
-
-            if values:
-                values += ', '
-            values += '%s' % value
+        if not any(id_product, id_category):
+            # Error mandatory parameters
+            return False
             
-        cr = self._connection.cursor()
-        query = 'INSERT INTO ps_category_product(%s) VALUES (%s);' % (
-            fields, values)
-        cr.execute(query)
-        item_id = self._connection.insert_id()
-        self._connection.commit()
-        return item_id
+        field_quote = [] # all numeric
+        record = { # Direct not updated:
+            'id_product': id_product
+            'id_category': id_category,
+            'position': position,
+            }
+        query = self._prepare_insert_query(
+            record, 'category_product', field_quote)
 
-    def create(self, record_data, lang_record_db=False):
+        cr = self._connection.cursor()
+        cr.execute(query)
+        self._connection.commit()
+        
+        # ---------------------------------------------------------------------
+        # product_shop
+        # ---------------------------------------------------------------------
+        field_quote = [
+            'unity', 'redirect_type', 'available_date', 'condition',
+            'visibility', 'date_add', 'date_upd',
+            ]
+        # TODO write date     
+        record = {
+            'id_product': id_product,
+	        'id_shop': self.id_shop,
+	        'id_category_default': id_category,
+	        'id_tax_rules_group': 1,
+	        'on_sale': 0,
+	        'online_only': 0,
+	        'ecotax': 0.0,
+	        'minimal_quantity': 1,
+	        'price': price,
+	        'wholesale_price': 0.0,
+	        'unity': '',
+	        'unit_price_ratio': 0.0,
+	        'additional_shipping_cost': 0.0,
+	        'customizable': 0,
+	        'uploadable_files': 0,
+	        'text_fields': 0,
+	        'active': 1,
+	        'redirect_type': '404',
+	        'id_product_redirected': 0,
+	        'available_for_order': 1,
+	        'available_date': '2013-01-01',
+	        'condition': 'new',
+	        'show_price': 1,
+	        'indexed': 1,
+	        'visibility': 'both',
+	        'cache_default_attribute': 0,
+	        'advanced_stock_management': 0,
+	        'date_add': '2013-10-01 00:00:00',
+	        'date_upd': '2013-10-01 00:00:00',
+	        'pack_stock_type': self.pack_stock_type,
+	        }	
+	        
+        # Crete and execute query:
+        query = self._prepare_insert_query(
+            record, 'product_shop', field_quote)
+        cr = self._connection.cursor()
+        cr.execute(query)
+        self._connection.commit()
+	        
+        return True
+
+    def create(self, record_data, lang_record_db=False, record_category=False):
         ''' Update record
-            record: data of ps_product
+            record: data of product
             lang_record: dict with ID lang: dict of valued
         '''
         if not self._connection:
             return False
+            
         if not lang_record_db:    
-            {}
+            lang_record_db = {}
+        if not record_category:    
+            record_category = {}
 
         # ---------------------------------------------------------------------
         # Fields validation:
         # ---------------------------------------------------------------------
-        field_mandatory = ['reference', 'price']
+        field_mandatory = ['reference', 'price'] # TODO manage check
 
-        # Use quote:
+        # Use quote (fields are for all tables used here:
         field_quote = [  
             # -----------          
-            # ps_product:
+            # product:
             # -----------          
             # String:
             'ean13', 'upc', 'redirect_type', 'visibility',
@@ -119,7 +196,7 @@ class mysql_connector():
             'available_date', 'date_add', 'date_upd',
             
             # ----------------      
-            # ps_product_lang:
+            # product_lang:
             # ----------------     
             # String
             'description', 'description_short', 'link_rewrite',
@@ -130,7 +207,7 @@ class mysql_connector():
             ]
 
         # ---------------------------------------------------------------------
-        # Update numeric ps_product
+        # Update numeric product
         # ---------------------------------------------------------------------
         record = {
             #'id_product':
@@ -180,32 +257,17 @@ class mysql_connector():
             'date_upd': '2017-01-01 10:00:00',
             'advanced_stock_management': 0,
             'pack_stock_type': 3,
-            }
-        
+            }        
         record.update(record_data) # Add field passed from ODOO
 
-        fields = values = ''
-        for field, value in record.iteritems():
-            if fields:
-                fields += ', '
-            fields += '`%s`' % field
-
-            if values:
-                values += ', '
-            values += '%s%s%s' % (
-                '\'' if field in field_quote else '',
-                value,
-                '\'' if field in field_quote else '',
-                )
-            
+        query = self._prepare_insert_query(record, 'product', field_quote)
         cr = self._connection.cursor()
-        query = 'INSERT INTO ps_product(%s) VALUES (%s);' % (fields, values)
         cr.execute(query)
         item_id = self._connection.insert_id()
         self._connection.commit()
         
         # ---------------------------------------------------------------------
-        # Update lang ps_product_lang
+        # Update lang product_lang:
         # ---------------------------------------------------------------------
         if not lang_record_db:
             # Record not created
@@ -217,9 +279,12 @@ class mysql_connector():
 
             # Default data:
             record_lang_data = {
+                # Fixed field:
                 'id_product': item_id,
                 'id_shop': self.id_shop,
                 'id_lang': id_lang,
+                
+                # Field to populate from ODOO:
                 'description': '',
                 'description_short': '',
                 'link_rewrite': '',
@@ -234,28 +299,19 @@ class mysql_connector():
             # Generate extra data and integrate:
             self._expand_lang_data(lang_data)
             record_lang_data.update(lang_data)
-
-            fields = values = ''
-            for field, value in record_lang_data.iteritems():
-                if fields:
-                    fields += ', '
-                fields += '`%s`' % field
-
-                if values:
-                    values += ', '
-                values += '%s%s%s' % (
-                    '\'' if field in field_quote else '',
-                    value,
-                    '\'' if field in field_quote else '',
-                    )
-                
+            
+            # Prepare and run query:
+            query = self._prepare_insert_query(
+                record_lang_data, 'product_lang', field_quote)                
             cr = self._connection.cursor()
-            query = 'INSERT INTO ps_product_lang(%s) VALUES (%s);' % (
-                fields, values)
-
             cr.execute(query)
             self._connection.commit()
-                    
+
+        # ---------------------------------------------------------------------
+        # Update product category block:
+        # ---------------------------------------------------------------------
+        record_category['id_product'] = item_id
+        write_category(record_category)            
         return item_id
 
     def write(self, **parameter):
@@ -296,7 +352,7 @@ class mysql_connector():
     # Constructor:
     # -------------------------------------------------------------------------
     def __init__(self, database, user, password, server='localhost', port=3306, 
-            charset='utf8'):
+            charset='utf8', prefix='ps'):
         ''' Init procedure        
         '''
         # Save parameters:
@@ -308,6 +364,7 @@ class mysql_connector():
         self._charset = charset
         self._status = 'connected'
         self._connected = True
+        self._prefix = prefix
         
         self._log = False # no log
         
