@@ -127,14 +127,13 @@ class mysql_connector():
 
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
 
-        import pdb; pdb.set_trace()
         image_list = self.id_image_type.iteritems()
         for image_type, dimension in image_list:
             image_out = os.path.join(
                 path_image_out,
                 '%s%s%s.%s' % (
                     key_image, # ID image
-                    '-' if key_image else '', # separator -
+                    '-' if image_type else '', # separator -
                     image_type or '', # name of image type
                     ext_out, # extension
                     ),
