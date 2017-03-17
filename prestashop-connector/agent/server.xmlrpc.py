@@ -136,7 +136,7 @@ def execute(model, operation, *parameter, **args):
         # ------------------
         elif operation == 'create':
             return mysql_db.create(
-                parameter[0], parameter[1], # Dictionary with record
+                parameter[0], parameter[1], parameter[2] # 3 records
                 )
         
         # ------------------
