@@ -129,7 +129,7 @@ class mysql_connector():
                 path_out,
                 '%s-%s.%s' % (
                     key_image, 
-                    image_type
+                    image_type,
                     ext_out,
                     ),
                 )
