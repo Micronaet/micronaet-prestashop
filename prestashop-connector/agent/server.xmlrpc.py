@@ -166,8 +166,7 @@ def execute(model, operation, *parameter, **parameter_dict):
         # ----------------------------------
         # 1. Create update product category:
         # ----------------------------------
-        elif operation == 'list':
-            import pdb; pdb.set_trace()
+        if operation == 'list':
             return mysql_db.category_list()
 
         else:
