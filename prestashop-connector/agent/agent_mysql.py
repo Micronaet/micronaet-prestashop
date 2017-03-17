@@ -138,9 +138,8 @@ class mysql_connector():
                         image_type or '', # name of image type
                         ext_out, # extension
                         ),
-                    )               
-                try:     
-                    shutil.copyfile(image_in, image_out)
+                    )
+                shutil.copyfile(image_in, image_out)
                     
                 if self._log:
                     print '[INFO] Image %s > %s' % (image_in, image_out)
