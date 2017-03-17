@@ -292,10 +292,10 @@ class mysql_connector():
         record_data = parameter[0]
         lang_record_db = parameter[1] 
         record_category = parameter[2]
+        update_image = parameter[3]
         
         # Parameter name-value explode:
-        import pdb; pdb.set_trace()
-        update_image = parameter_args.get('update_image', False)
+        #update_image = parameter_args.get('update_image', False)
         reference = record_data.get('reference', False) # For image name
         
         if not self._connection:
