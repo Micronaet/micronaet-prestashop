@@ -171,6 +171,7 @@ class mysql_connector():
 	        
         return True
 
+        def create(self, *parameter, **parameter_args):
         ''' Update record
             record: data of product
             lang_record: dict with ID lang: dict of valued
@@ -181,7 +182,7 @@ class mysql_connector():
         record_category = parameter[2]
         
         # Parameter name-value explode:
-        update_image = args.get('update_image', False)
+        update_image = parameter_args.get('update_image', False)
         
         if not self._connection:
             return False
