@@ -90,7 +90,6 @@ class mysql_connector():
     def write_image(self, record_data, reference, update_image=False):
         ''' Create image record for product and generate image in asked
         '''
-        import pdb; pdb.set_trace()
         if not self._connection:
             return False
 
@@ -111,8 +110,9 @@ class mysql_connector():
             'insert', record, 'image', field_quote)
         cr = self._connection.cursor()
         cr.execute(query)
-        self._connection.commit()        
         id_image = self._connection.insert_id()
+        import pdb; pdb.set_trace()
+        self._connection.commit()        
         
         # ---------------------------------------------------------------------
         # Create image_lang (now X lang empty fields)
