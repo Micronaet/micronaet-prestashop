@@ -137,7 +137,7 @@ class mysql_connector():
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
 
         image_list = self.id_image_type.iteritems()
-
+        import pdb; pdb.set_trace()
         for image_type, size in image_list:
             image_out = os.path.join(
                 path_image_out,
