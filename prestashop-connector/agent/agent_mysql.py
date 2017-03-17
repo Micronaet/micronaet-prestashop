@@ -124,7 +124,7 @@ class mysql_connector():
         key_folder = [item for item in key_image]
         path_out = os.path.join(path_out, *key_folder)
 
-        os.system('mkdir -p %s' % path_out) # Create all image folder if needed
+        os.system('mkdir -p -mode 777 %s' % path_out) # Create all image folder if needed
         for image_type, dimension in self.id_image_type.iteritems():
             image_out = os.path.join(
                 path_out,
