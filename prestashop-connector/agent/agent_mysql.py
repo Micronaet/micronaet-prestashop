@@ -117,7 +117,7 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Create image_lang (now X lang empty fields)
         # ---------------------------------------------------------------------
-        for lang. id_lang in id_langs.iteritems():
+        for lang, id_lang in id_langs.iteritems():
             record = { # Direct not updated:
                 'id_image': id_image,
                 'id_lang': id_lang,
