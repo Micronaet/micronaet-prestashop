@@ -531,7 +531,7 @@ class mysql_connector():
             print query
         cr.execute(query)
         return [
-            (item['id_category'], item['id_name'] for item in cr.fetchall()]
+            (item['id_category'], item['id_name']) for item in cr.fetchall()]
         
     # -------------------------------------------------------------------------
     # Constructor:
