@@ -87,6 +87,72 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
+    def write_image(self, record_data, reference, update_image=False):
+        ''' Create image record for product and generate image in asked
+        '''
+        import pdb; pdb.set_trace()
+        if not self._connection:
+            return False
+
+        id_product = record_data.get('id_product', False)
+        
+        # ---------------------------------------------------------------------
+        # Create image record
+        # ---------------------------------------------------------------------
+        field_quote = ['cover', 'legend'] # unique for all
+        record = { # Direct not updated:
+            # id_image
+            'id_product': 0,
+            'position': 1,
+            'cover': '',
+            }
+        record.update(record_data)  
+        query = self._prepare_mysql_query(
+            'insert', record, 'image', field_quote)
+        cr = self._connection.cursor()
+        cr.execute(query)
+        self._connection.commit()        
+        id_image = self._connection.insert_id()
+        
+        # ---------------------------------------------------------------------
+        # Create image_lang (now X lang empty fields)
+        # ---------------------------------------------------------------------
+        for lang. id_lang in id_langs.iteritems():
+            record = { # Direct not updated:
+                'id_image': id_image,
+                'id_lang': id_lang,
+                'legend': '',
+                }                
+            #record.update(record_data)  
+            query = self._prepare_mysql_query(
+                'insert', record, 'image_lang', field_quote)
+            cr = self._connection.cursor()
+            cr.execute(query)
+            self._connection.commit()        
+
+        # ---------------------------------------------------------------------
+        # Create image_shop
+        # ---------------------------------------------------------------------
+        record = { # Direct not updated:
+            'id_image': id_image,
+            'id_shop': self.id_shop,
+            'cover': '',
+            'id_product': id_product,
+            }                
+        #record.update(record_data)  
+        query = self._prepare_mysql_query(
+            'insert', record, 'image_lang', field_quote)
+        cr = self._connection.cursor()
+        cr.execute(query)
+        self._connection.commit()        
+
+        # ---------------------------------------------------------------------
+        # Redim image in correct folder:
+        # ---------------------------------------------------------------------
+        
+        
+        return id_image
+        
     def write_category(self, record_data):
         ''' Update product - category link if present or create
             product_shop: id_product, id_category, position  
@@ -98,7 +164,7 @@ class mysql_connector():
         # TODO check mandatory fields
         # ---------------------------------------------------------------------
         # category_product
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         id_product = record_data.get('id_product', False)
         id_category = record_data.get('id_category', False)
         position = record_data.get('position', False)
@@ -183,6 +249,7 @@ class mysql_connector():
         
         # Parameter name-value explode:
         update_image = parameter_args.get('update_image', False)
+        reference = record_data.get('reference', False) # For image name
         
         if not self._connection:
             return False
@@ -272,7 +339,7 @@ class mysql_connector():
         query = self._prepare_mysql_query('insert', record, 'product', field_quote)
         cr = self._connection.cursor()
         cr.execute(query)
-        item_id = self._connection.insert_id()
+        id_product = self._connection.insert_id()
         self._connection.commit()
         
         # ---------------------------------------------------------------------
@@ -280,7 +347,7 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         if not lang_record_db:
             # Record not created
-            return False #item_id
+            return False #id_product
 
         for lang, lang_data in lang_record_db.iteritems():
             id_lang = self.id_langs.get(lang)
@@ -289,7 +356,7 @@ class mysql_connector():
             # Default data:
             record_lang_data = {
                 # Fixed field:
-                'id_product': item_id,
+                'id_product': id_product,
                 'id_shop': self.id_shop,
                 'id_lang': id_lang,
                 
@@ -319,14 +386,21 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Update product category block:
         # ---------------------------------------------------------------------
-        record_category['id_product'] = item_id
-        self.write_category(record_category)            
-        return item_id
+        record_category['id_product'] = id_product
+        self.write_category(record_category)
+        
+        # ---------------------------------------------------------------------
+        # Update product category block:
+        # ---------------------------------------------------------------------
+        self.write_image(reference, id_product, update_image=update_image)
+        if update_image:
+            
+        return id_product
 
     def write(self, **parameter):
         ''' Update record
         '''
-        item_id = parameter['item_id']
+        id_product = parameter['id_product']
         record = parameter['record']
         
         # Update numeric ps_product
