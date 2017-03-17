@@ -129,7 +129,7 @@ class mysql_connector():
         try:
             image_list = self.id_image_type.iteritems()
             image_list.append(('', (100, 100))) # TODO change
-            for image_type, dimension in :
+            for image_type, dimension in image_list:
                 image_out = os.path.join(
                     path_image_out,
                     '%s%s%s.%s' % (
