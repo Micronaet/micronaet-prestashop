@@ -109,6 +109,7 @@ def execute(model, operation, *parameter, **parameter_dict):
         parameter: list of element used in operation
         parameter_dict: dict of parameter (name, data)
     '''
+    import pdb; pdb.set_trace()
     # Setup result dict:
     res = {
         'result': False,
@@ -135,7 +136,6 @@ def execute(model, operation, *parameter, **parameter_dict):
         # 2. Create product:
         # ------------------        
         elif operation == 'create':
-            import pdb; pdb.set_trace()
             return mysql_db.create(parameter, parameter_dict)
         
         # ------------------
