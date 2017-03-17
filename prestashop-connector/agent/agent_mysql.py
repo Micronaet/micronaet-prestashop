@@ -90,6 +90,7 @@ class mysql_connector():
             product_shop: id_product, id_category, position  
             category_product: price 
         '''
+        import pdb; pdb.set_trace()
         if not self._connection:
             return False
             
