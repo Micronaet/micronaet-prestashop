@@ -126,25 +126,30 @@ class mysql_connector():
 
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
         
-        for image_type, dimension in self.id_image_type.iteritems():
-            image_out = os.path.join(
-                path_image_out,
-                '%s-%s.%s' % (
-                    key_image, 
-                    image_type,
-                    ext_out,
-                    ),
-                )               
-            try:     
-                shutil.copyfile(image_in, image_out)
-            except:
-                print '[ERROR] Cannot move image: %s' % image_out
-                continue
-                
-            if self._log:
-                print '[INFO] Image %s > %s' % (image_in, image_out)
-        os.system('chown -R www-data:www-data %s' % path_image_out)
-        os.system('chmod -R 775 %s' % path_image_out)
+        try:
+            image_list = self.id_image_type.iteritems()
+            image_list.append(('', (100, 100))) # TODO change
+            for image_type, dimension in :
+                image_out = os.path.join(
+                    path_image_out,
+                    '%s%s%s.%s' % (
+                        key_image, # ID image
+                        '-' if key_image else '', # separator -
+                        image_type or '', # name of image type
+                        ext_out, # extension
+                        ),
+                    )               
+                try:     
+                    shutil.copyfile(image_in, image_out)
+                    
+                if self._log:
+                    print '[INFO] Image %s > %s' % (image_in, image_out)
+            os.system('chown -R www-data:www-data %s' % path_image_out)
+            os.system('chmod -R 775 %s' % path_image_out)
+        except:
+             print '[ERROR] Cannot move image: %s' % image_in
+            continue
+            
         return True
         
     def write_image(self, record_data, reference, update_image=False):
