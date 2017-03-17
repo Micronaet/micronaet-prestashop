@@ -98,10 +98,9 @@ class mysql_connector():
     # -------------------------------------------------------------------------
     #                             Exported function:
     # -------------------------------------------------------------------------
-    def update_image(self, reference, id_image):
+    def update_image_file(self, reference, id_image):
         ''' Update image reference in rsync folder to prestashop path        
         '''
-        import pdb; pdb.set_trace()
         root_path = '/var/www/html/2015.redesiderio.it/site/public/https' 
 
         path_in = os.path.join(root_path, 'img/odoo')
@@ -137,7 +136,6 @@ class mysql_connector():
     def write_image(self, record_data, reference, update_image=False):
         ''' Create image record for product and generate image in asked
         '''
-        import pdb; pdb.set_trace()
         if not self._connection:
             return False
 
@@ -196,8 +194,9 @@ class mysql_connector():
         # ---------------------------------------------------------------------
         # Redim image in correct folder:
         # ---------------------------------------------------------------------
-        if update_image:  
-            self.update_image(reference, id_image)
+        import pdb; pdb.set_trace()
+        if update_image:
+            self.update_image_file(reference, id_image)
         return id_image
         
     def write_category(self, record_data):
