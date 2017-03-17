@@ -163,7 +163,16 @@ def execute(model, operation, *parameter, **parameter_dict):
     #                           CATEGORY OPERATIONS:
     # -------------------------------------------------------------------------    
     elif model == 'category':
-        pass
+        # ----------------------------------
+        # 1. Create update product category:
+        # ----------------------------------
+        elif operation == 'list':
+            return mysql_db.category_list()
+
+        else:
+            res['error'] = 'Model %s operation %s not managed!' % (
+                model, operation)            
+    
     
     # -------------------------------------------------------------------------
     #                             SYSTEM OPERATIONS:

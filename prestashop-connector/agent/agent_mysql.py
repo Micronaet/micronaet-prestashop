@@ -514,6 +514,25 @@ class mysql_connector():
         cr.execute(query)
         return [item['id_product'] for item in cr.fetchall()]
 
+    def category_list(self, ):
+        ''' Return list of category present in Prestashop
+        '''
+        if not self._connection:
+            return False
+            
+        cr = self._connection.cursor()
+        query = '''
+            SELECT id_category, name
+            FROM ps_category_lang
+            WHERE id_lang = %s;
+            ''' % (self.id_langs.get('it_IT', 1), )
+            
+        if self._log:
+            print query
+        cr.execute(query)
+        return [
+            (item['id_category'], item['id_name'] for item in cr.fetchall()]
+        
     # -------------------------------------------------------------------------
     # Constructor:
     # -------------------------------------------------------------------------
