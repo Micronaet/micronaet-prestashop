@@ -393,7 +393,7 @@ class mysql_connector():
         # Update product category block:
         # ---------------------------------------------------------------------
         id_image = self.write_image({
-            'id_product': ip_product,
+            'id_product': id_product,
             #'position': 1,
             #'cover': '',
             }, reference, update_image=update_image)
