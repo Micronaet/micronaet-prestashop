@@ -101,7 +101,7 @@ class mysql_connector():
         position = record_data.get('position', False)
         price = record_data.get('price', False)
 
-        if not any(id_product, id_category):
+        if not any((id_product, id_category)):
             # Error mandatory parameters
             return False
             
