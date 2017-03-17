@@ -124,6 +124,7 @@ class mysql_connector():
         key_folder = [item for item in key_image]
         path_image_out = os.path.join(path_out, *key_folder)
 
+        import pdb; pdb.set_trace()
         os.system('mkdir -p %s' % path_image_out) # Create all image folder if needed
         os.system('chown -R www-data:www-data %s' % path_out)
         os.system('chmod -R 775 %s' % path_out)
